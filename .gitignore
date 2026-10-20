@@ -1,0 +1,22 @@
+# Navidrome plugin build outputs
+/plugin.wasm
+/liveplaylist.ndp
+/build/
+/dist/
+
+# Go build and test artifacts
+/coverage.out
+/coverage.html
+*.test
+*.out
+
+# Local configuration and environment files
+.env
+.env.*
+!.env.example
+
+# Editor and operating system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

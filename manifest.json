@@ -1,0 +1,121 @@
+{
+  "$schema": "https://raw.githubusercontent.com/navidrome/navidrome/refs/heads/master/plugins/manifest-schema.json",
+  "$id": "navidrome://plugins/manifest/liveplaylist",
+  "name": "LivePlaylist",
+  "author": "LivePlaylist contributors",
+  "version": "1.0.0",
+  "description": "Builds a Navidrome playlist from setlists for gigs you attended",
+  "permissions": {
+    "http": {
+      "reason": "Fetch setlists for configured gigs",
+      "requiredHosts": ["api.setlist.fm"]
+    },
+    "library": {
+      "reason": "Match setlist songs against music in selected libraries"
+    },
+    "matcher": {
+      "reason": "Match setlist songs to tracks in the Navidrome library"
+    },
+    "scheduler": {
+      "reason": "Sync the playlist at startup and at the configured interval"
+    },
+    "subsonicapi": {
+      "reason": "Search the user's library for matching recording versions and create or update the live setlist playlist"
+    },
+    "users": {
+      "reason": "Run library matching and playlist updates for the configured Navidrome user"
+    }
+  },
+  "config": {
+    "schema": {
+      "type": "object",
+      "properties": {
+        "refreshInterval": {
+          "type": "string",
+          "title": "Refresh interval",
+          "description": "How often to refresh attended setlists and update playlists (scheduled at 03:00 server time)",
+          "enum": ["daily", "weekly", "monthly"],
+          "default": "weekly"
+        },
+        "users": {
+          "type": "array",
+          "title": "User configurations",
+          "description": "Each user has their own setlist.fm API key, gig list, and playlist",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "username": {
+                "type": "string",
+                "title": "Navidrome username",
+                "description": "Must be granted to this plugin in Navidrome's user access settings",
+                "minLength": 1
+              },
+              "apiKey": {
+                "type": "string",
+                "title": "setlist.fm API key",
+                "minLength": 1
+              },
+              "playlistName": {
+                "type": "string",
+                "title": "Playlist name",
+                "description": "Existing playlist with this name is extended; defaults to Live Setlists",
+                "default": "Live Setlists"
+              },
+              "importMode": {
+                "type": "string",
+                "title": "Gig source",
+                "description": "Choose whether this user enters gigs manually or imports attended setlists from a setlist.fm profile",
+                "enum": ["manual", "profile"],
+                "default": "manual"
+              },
+              "liveVersionPreference": {
+                "type": "string",
+                "title": "Live recording preference",
+                "description": "When matching a song, prefer live recordings, avoid live recordings, or use Navidrome's default match",
+                "enum": ["any", "preferLive", "avoidLive"],
+                "default": "any"
+              },
+              "minimumTrackLengthSeconds": {
+                "type": "integer",
+                "title": "Minimum track length (seconds)",
+                "description": "Tracks shorter than this are excluded from the playlist; set to 0 to disable the filter",
+                "minimum": 0,
+                "default": 60
+              },
+              "setlistUserId": {
+                "type": "string",
+                "title": "setlist.fm profile user ID",
+                "description": "Required in profile mode; ignored in manual mode",
+                "minLength": 1
+              },
+              "gigs": {
+                "type": "array",
+                "title": "Gigs attended",
+                "description": "Required in manual mode; ignored in profile mode",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "date": {
+                      "type": "string",
+                      "title": "Date",
+                      "format": "date"
+                    },
+                    "band": {
+                      "type": "string",
+                      "title": "Band",
+                      "minLength": 1
+                    }
+                  },
+                  "required": ["date", "band"]
+                }
+              }
+            },
+            "required": ["username", "apiKey", "importMode"]
+          }
+        }
+      },
+      "required": ["users"]
+    }
+  }
+}
