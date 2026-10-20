@@ -126,6 +126,21 @@ zip -j -FS liveplaylist.ndp manifest.json plugin.wasm
 
 Place `liveplaylist.ndp` in Navidrome's plugins folder, then rescan for plugins.
 
+## GitHub tests and releases
+
+Pull requests run `go test ./...` automatically. To publish a release, push a
+version tag such as `v1.2.0`:
+
+```sh
+git tag v1.2.0
+git push origin v1.2.0
+```
+
+The release workflow runs the tests, builds the TinyGo WebAssembly plugin, and
+creates a GitHub release with a downloadable `liveplaylist-v1.2.0.ndp` package.
+Use the matching version number in the example above and the generated asset
+name.
+
 ## Playlist behavior
 
 The plugin updates one playlist per configured user. It preserves each
