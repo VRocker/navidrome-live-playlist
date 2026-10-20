@@ -2,9 +2,10 @@
   "$schema": "https://raw.githubusercontent.com/navidrome/navidrome/refs/heads/master/plugins/manifest-schema.json",
   "$id": "navidrome://plugins/manifest/liveplaylist",
   "name": "LivePlaylist",
-  "author": "LivePlaylist contributors",
+  "author": "VRocker",
   "version": "1.0.0",
   "description": "Builds a Navidrome playlist from setlists for gigs you attended",
+  "website": "https://github.com/VRocker/navidrome-live-playlist",
   "permissions": {
     "http": {
       "reason": "Fetch setlists for configured gigs",
